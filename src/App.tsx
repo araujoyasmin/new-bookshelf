@@ -1,94 +1,57 @@
 import React, { useState } from 'react';
-import { useMantineColorScheme, Button, Group,Table,TableData, Container,Drawer, List, ListItem,Avatar, Text} from '@mantine/core'
-import { IconPhoto, IconDownload, IconArrowRight} from '@tabler/icons-react';
-import { BookTable } from './components/BookTable';
-import avatarImage from './assets/violet.webp';
+import { AuthenticationTitle } from './components/Login/Authentication';
+import { Menu } from './components/Menu';
+import { AppShellFooter, Container, Text, Title } from '@mantine/core';
+import { IconBook } from '@tabler/icons-react';
+import logo from '../src/assets/lendo.png'
 
 function App() {
-  const [showSecret, setShowSecret] = useState(false);
 
-  const handleClickButton = () => {
-    setShowSecret(!showSecret);
-  } 
-  const [drawerOpened, setDrawerOpened] = useState(false);
+  const [isLoggedIn, setLoggedIn] = useState(false);
 
-  const toggleDrawer = () => {
-    setDrawerOpened(!drawerOpened);
+  const handleLogin = (username, password) => {
+    // Lógica de autenticação simulada (use uma lógica segura no mundo real)
+    const validUsername = 'user';
+    const validPassword = 'password';
+
+    if (username === validUsername && password === validPassword) {
+      setLoggedIn(true);
+    } else {
+      alert('Invalid credentials. Try again.');
+    }
   };
 
-  const openBookTable = () => {
-    setDrawerOpened(false);
-    setShowSecret(true);
+  const handleLogout = () => {
+    setLoggedIn(false);
   };
-
 
   return (
-    <>
-    <Container style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh'}}>
-      {/* Cabeçalho */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px', borderBottom: '1px solid #ddd' }}>
-        {/* Informações do usuário */}
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Avatar
-            radius="xl"
-            src={avatarImage} 
-            alt="Nome do Usuário"
-            style={{ marginRight: '8px' }}
-            onClick={toggleDrawer}
-          />
-          <div>
-            <Text size="md" fw={700}>Yasmin Araujo</Text>
-            <Text size="sm"><b>Lendo:</b> Era uma vez um coração partido </Text>
-          </div>
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      <header style={{ textAlign: 'center', padding: '20px', backgroundColor: '#59595A' }}>
+        {/* Conteúdo do cabeçalho aqui */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <img src={logo} alt="Minha Estante Icon" style={{ width: '24px', height: '24px', marginRight: '8px' }} />
+          <Title order={2} orderMd={1} orderLg={1} orderXl={1} style={{ color: 'white', marginBottom: 0 }}>
+            Minha Estante
+          </Title>
         </div>
-        
-       
-      </div>
-
-      {/* Conteúdo principal da aplicação vai aqui */}
-      <div style={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
-        {showSecret && <BookTable/>}
-      </div>
-
-      {/* Menu lateral */}
-      <Drawer
-        position="left"
-        opened={drawerOpened}
-        onClose={() => setDrawerOpened(false)}
-      >
-        <List>
-          <ListItem>
-            <Button variant="link" onClick={openBookTable} style={{ marginBottom:'10px'}}>
-               Estante
-            </Button>
-          </ListItem>
-          <ListItem>
-            <Button variant="link" onClick={() => console.log("Menu Item 2 clicked")} style={{ marginBottom:'10px'}}>
-              TBR
-            </Button>
-          </ListItem>
-          <ListItem>
-            <Button variant="link" onClick={() => console.log("Menu Item 3 clicked")} style={{ marginBottom:'10px'}}>
-              Favoritos
-            </Button>
-          </ListItem>
-        </List>
-      </Drawer>
-    </Container>
-
-    <Container style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
-    {/* <Button
-        variant="light"
-        color="violet"
-        leftSection={<IconPhoto size={14} />}
-        rightSection={<IconArrowRight size={14} />}
-        onClick={handleClickButton}
-      >
-        Olhe sua estante
-      </Button> */}
-      
-      </Container>
-    </>
+      </header>
+      <main style={{ flex: 1 }}>
+        <Container>
+          {isLoggedIn ? (
+            <Menu />
+          ) : (
+            <AuthenticationTitle handleLogin={handleLogin} />
+          )}
+        </Container>
+      </main>
+      <footer style={{ textAlign: 'center', padding: '20px', backgroundColor: '#5D3C7C' }}>
+        {/* Conteúdo do rodapé aqui */}
+        <Text size="sm" color="white">
+          © 2024 Meu App. Todos os direitos reservados.
+        </Text>
+      </footer>
+    </div>
   );
 }
 
